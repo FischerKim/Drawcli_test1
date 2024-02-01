@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CDrawingTool.h"
+#include <iostream>
 
 CDrawingTool::CDrawingTool()
 {
@@ -15,40 +16,40 @@ std::list<DrawableObject> CDrawingTool::GetDrawableObjects() {
 	return m_drawableObjects;
 }
 
-void CDrawingTool::OnButtonEmpty()
+DrawShape CDrawingTool::GetShapeToDraw() {
+	return m_shapeToDraw;
+}
+
+void CDrawingTool::OnButtonShape(DrawShape type)
 {
+	if(type == DrawShape::Circle) m_createCircle = !m_createCircle;
+	else if(type == DrawShape::Rect) m_createRect = !m_createRect;
+	else if(type == DrawShape::Line) m_createLine = !m_createLine;
+	else {
+		m_createCircle = false;
+		m_createLine = false;
+		m_createRect = false;
+	}
+	m_shapeToDraw = type;
+}
+
+std::vector<int> CDrawingTool::OnButtonShape()
+{
+	std::vector<int> tmp;
 	m_shapeToDraw = DrawShape::None;
 	std::list<DrawableObject>::iterator iterator = m_drawableObjects.begin();
 
 	while (iterator != m_drawableObjects.end()) {
-		if (iterator->selected) {
+		if (iterator->GetSelected()) {
+			int id = iterator->GetID();
+			tmp.push_back(id);
 			iterator = m_drawableObjects.erase(iterator);
 		}
 		else {
 			++iterator;
 		}
 	}
-}
-
-void CDrawingTool::OnButtonCircle()
-{
-	m_createCircle = !m_createCircle;
-	if(m_createCircle) m_shapeToDraw = DrawShape::Circle;
-	else m_shapeToDraw = DrawShape::None;
-}
-
-void CDrawingTool::OnButtonLine()
-{
-	m_createLine = !m_createLine;
-	if (m_createLine) m_shapeToDraw = DrawShape::Line;
-	else m_shapeToDraw = DrawShape::None;
-}
-
-void CDrawingTool::OnButtonRect()
-{
-	m_createRect = !m_createRect;
-	if (m_createRect) m_shapeToDraw = DrawShape::Rect;
-	else m_shapeToDraw = DrawShape::None;
+	return tmp;
 }
 
 //void CDrawingTool::OnButtonZoomIn()
@@ -80,7 +81,7 @@ void CDrawingTool::OnLButtonDown(CPoint point)
 	m_y1 = point.y;
 	for (auto it = m_drawableObjects.begin(); it != m_drawableObjects.end(); ++it)
 	{
-		if (it->selected && it->rect.PtInRect(point)) {
+		if (it->GetSelected() && it->GetCRect().PtInRect(point)) {
 			m_changelocation = true;
 		}
 	}
@@ -100,32 +101,44 @@ void CDrawingTool::OnLButtonUp(CPoint point)
 			int deltaY = m_y2 - m_y1;
 			for (auto it = m_drawableObjects.begin(); it != m_drawableObjects.end(); ++it)
 			{
-				if (it->selected) {
-					it->rect.TopLeft().x += deltaX;
-					it->rect.TopLeft().y += deltaY;
-					it->rect.BottomRight().x += deltaX;
-					it->rect.BottomRight().y += deltaY;
+				if (it->GetSelected()) {
+					CRect tmp = it->GetCRect();
+					tmp.TopLeft().x += deltaX;
+					tmp.TopLeft().y += deltaY;
+					tmp.BottomRight().x += deltaX;
+					tmp.BottomRight().y += deltaY;
+					it->SetCRect(tmp);
 				}
 			}
 	 }
 	 else if ((m_createCircle || m_createLine || m_createRect) && (m_shapeToDraw != DrawShape::None))
 	 {
 		 DrawableObject obj;
-		 obj.shape = m_shapeToDraw;
-		 obj.rect = CRect(m_x1, m_y1, m_x2, m_y2);
+		 obj.SetID(m_count++);
+		 obj.SetShape(m_shapeToDraw);
+		 obj.SetCRect(CRect(m_x1, m_y1, m_x2, m_y2));
 		 m_drawableObjects.push_back(obj);
 	 }
 	else
 	{
 		for (auto it = m_drawableObjects.begin(); it != m_drawableObjects.end(); ++it) {
-			CRect intersectionRect = new CRect(it->rect);
-			if (intersectionRect.IntersectRect(&CRect(m_x1, m_y1, m_x2, m_y2), &intersectionRect)) {
-				it->selected = true;
-			}
-			else
-			{
-				it->selected = false;
-			}
+			CRect tmp(it->GetCRect());
+			CRect normalizedrect(
+				min(tmp.TopLeft().x, tmp.BottomRight().x),
+				min(tmp.TopLeft().y, tmp.BottomRight().y),
+				max(tmp.TopLeft().x, tmp.BottomRight().x),
+				max(tmp.TopLeft().y, tmp.BottomRight().y)
+			);
+
+			if (normalizedrect.PtInRect(point)) it->SetSelected(true);
+			else if (normalizedrect.IntersectRect(
+				&CRect(min(m_x1, m_x2),
+					min(m_y1, m_y2),
+					max(m_x1, m_x2),
+					max(m_y1, m_y2)),
+				&normalizedrect)) 
+				it->SetSelected(true);
+			else it->SetSelected(false);
 		}
 	}
 }

@@ -1,2 +1,5 @@
 Drawcli_test1/Debug/
 *.pdb
+Drawcli_test1/Release/
+*.tlog
+Drawcli_test1/x64/

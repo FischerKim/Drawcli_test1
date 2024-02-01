@@ -57,6 +57,9 @@
     <ClInclude Include="CDrawingTool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Drawcli_test1.cpp">
@@ -87,6 +90,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CDrawingTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CShape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,7 +8,6 @@
 #include "afxdialogex.h"
 #include "Drawcli_test1.h"
 #include "MainFrm.h"
-
 #include "Drawcli_test1Doc.h"
 #include "Drawcli_test1View.h"
 

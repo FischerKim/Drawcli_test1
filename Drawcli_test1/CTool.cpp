@@ -1,25 +1,16 @@
 #include "pch.h"
+#include <iostream>
 #include "CTool.h"
-#include "CShape.h"
-#include "Drawcli_test1View.h"
 
-CTool::CTool(CShape nDrawShape) : m_drawShape(nDrawShape) {}
-
-void CTool::OnLButtonDown(CDrawclitest1View* pView, UINT nFlags, const CPoint& point) {}
-void CTool::OnLButtonDblClk(CDrawclitest1View* pView, UINT nFlags, const CPoint& point) {}
-void CTool::OnLButtonUp(CDrawclitest1View* pView, UINT nFlags, const CPoint& point) {}
-void CTool::OnMouseMove(CDrawclitest1View* pView, UINT nFlags, const CPoint& point) {}
-void CTool::OnEditProperties(CDrawclitest1View* pView) {}
-void CTool::OnCancel() {}
-
-CSelectTool::CSelectTool() : CTool(CShape nDrawShape) {}
-
-void CSelectTool::OnLButtonDown(CDrawclitest1View* pView, UINT nFlags, const CPoint& point)
+void CTool::OnButtonShape(DrawShape type)
 {
-    // Implementation for SelectTool
-    // ...
-    CTool::OnLButtonDown(pView, nFlags, point);
+	std::cout << "이 함수는 오버라이딩되는게 아니라 base class에 숨겨져있습니다" << std::endl;
 }
 
-// Add implementations for other tools...
+void CTool::OnLButtonDown(CPoint point)
+{
+}
 
+void CTool::OnLButtonUp(CPoint point)
+{
+}

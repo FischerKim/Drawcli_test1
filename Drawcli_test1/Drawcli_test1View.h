@@ -1,6 +1,7 @@
 
 #pragma once
 #include "CDrawingTool.h"
+#include <algorithm>
 class CDrawclitest1View : public CView
 {
 protected: // create from serialization only
@@ -51,6 +52,8 @@ public:
 	afx_msg void OnUpdateButtonCircle(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateButtonLine(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateButtonRect(CCmdUI* pCmdUI);
+	afx_msg void OnButtonSelect();
+	afx_msg void OnUpdateButtonSelect(CCmdUI* pCmdUI);
 };
 
 #ifndef _DEBUG 

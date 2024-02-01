@@ -25,9 +25,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
-	/*ON_COMMAND(ID_BUTTON_RECT, &CMainFrame::OnButtonRect)
-	ON_COMMAND(ID_BUTTON_LINE, &CMainFrame::OnButtonLine)
-	ON_COMMAND(ID_BUTTON_CIRCLE, &CMainFrame::OnButtonCircle)*/
 END_MESSAGE_MAP()
 
 static UINT indicators[] =

@@ -9,7 +9,7 @@ public:
 	ColorStaticCtrl();
 	virtual ~ColorStaticCtrl();
 
-	int red, green, blue;
+	int red{ 255 }, green{ 255 }, blue{ 255 };
 	CPoint point;
 
 	void refresh() {

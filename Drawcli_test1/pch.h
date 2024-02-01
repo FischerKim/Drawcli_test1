@@ -7,11 +7,12 @@
 #ifndef PCH_H
 #define PCH_H
 
+#include <vector>
+#include <list>
 // add headers that you want to pre-compile here
 #include "framework.h"
-#include <list>
 #include <atltypes.h>
 #include "CShape.h"
-#include <vector>
+#include "CTool.h"
 
 #endif //PCH_H
