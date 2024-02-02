@@ -37,7 +37,6 @@ public:
 
 private:
 	CDrawingTool* ODrawingTool;
-	CDC* m_pDC;
 	int m_red = 255, m_green = 255, m_blue = 255;
 
 public:

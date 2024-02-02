@@ -42,14 +42,12 @@ END_MESSAGE_MAP()
 
 CDrawclitest1View::CDrawclitest1View() noexcept
 {
-	m_pDC = nullptr;
 	ODrawingTool = new CDrawingTool();	
 }
 
 
 CDrawclitest1View::~CDrawclitest1View()
 {
-	m_pDC = nullptr;
 	delete ODrawingTool;
 }
 
@@ -62,7 +60,6 @@ BOOL CDrawclitest1View::PreCreateWindow(CREATESTRUCT& cs)
 
 void CDrawclitest1View::OnDraw(CDC* pDC)
 {
-	m_pDC = pDC;
 	CDrawclitest1Doc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 
@@ -71,7 +68,7 @@ void CDrawclitest1View::OnDraw(CDC* pDC)
 
 	auto color{ RGB(m_red, m_green, m_blue) };
 	CBrush brush(color);
-	m_pDC->FillRect(&rectWindow, &brush);
+	pDC->FillRect(&rectWindow, &brush);
 
 	std::list<DrawableObject> m_drawableObjects = ODrawingTool->GetDrawableObjects();
 	for (const DrawableObject& obj : m_drawableObjects) {
@@ -82,19 +79,19 @@ void CDrawclitest1View::OnDraw(CDC* pDC)
 		CPen* pOriginalPen = pDC->SelectObject(&pen);
 		switch (obj.GetShape()) {
 		case DrawShape::Circle:
-			m_pDC->Ellipse(obj.GetCRect());
+			pDC->Ellipse(obj.GetCRect());
 			break;
 		case DrawShape::Rect:
-			m_pDC->Rectangle(obj.GetCRect());
+			pDC->Rectangle(obj.GetCRect());
 			break;
 		case DrawShape::Line:
-			m_pDC->MoveTo(obj.GetCRect().TopLeft());
-			m_pDC->LineTo(obj.GetCRect().BottomRight());
+			pDC->MoveTo(obj.GetCRect().TopLeft());
+			pDC->LineTo(obj.GetCRect().BottomRight());
 			break;
 		case DrawShape::None:
 			break;
 		}
-		m_pDC->SelectObject(pOriginalPen);
+		pDC->SelectObject(pOriginalPen);
 	}
 
 }
